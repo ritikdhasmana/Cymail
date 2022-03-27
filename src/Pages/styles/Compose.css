@@ -1,0 +1,203 @@
+.Compose-container {
+  height: 100%;
+}
+.editor-container {
+  margin: auto;
+  margin-top: 5em;
+  height: 50%;
+  width: 75%;
+  background-color: white;
+  margin-bottom: 3em;
+  overflow: scroll;
+}
+
+.destination-sendbtn-container {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline: 12.5%;
+  font-weight: 700;
+}
+
+.destination-container {
+  padding: 0.5em;
+  line-height: 3em;
+  align-items: center;
+  justify-content: space-between;
+}
+.InputAddressField {
+  display: flex;
+  flex-direction: row;
+  margin: 1em;
+  height: 2em;
+  width: 35%;
+}
+.addressfield-label {
+  margin-right: 1em;
+}
+.remove {
+  margin-left: 1em;
+  font-size: 0.9em;
+  padding: 0.2em;
+  height: inherit;
+}
+
+@media (max-width: 600px) {
+  .editor-container {
+    margin: 0.5em;
+    margin-inline: auto;
+    height: 75%;
+    margin-bottom: 0;
+  }
+  .destination-sendbtn-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .InputAddressField {
+    width: 30%;
+    margin: 0.5em;
+  }
+}
+
+/* Toast */
+#toast {
+  visibility: hidden;
+  max-width: 500px;
+  height: 90px;
+  margin: auto;
+  background-color: gray;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  #toast {
+    max-width: 300px;
+  }
+}
+
+#toast #desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(240, 209, 108);
+  font-size: 22px;
+  font-weight: bold;
+  height: 90px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 2s,
+    fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 4s,
+    fadeout 0.5s 4.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes expand {
+  from {
+    min-width: 50px;
+  }
+  to {
+    min-width: 350px;
+  }
+}
+
+@keyframes expand {
+  from {
+    min-width: 50px;
+  }
+  to {
+    min-width: 350px;
+  }
+}
+@-webkit-keyframes stay {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 350px;
+  }
+}
+
+@keyframes stay {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 350px;
+  }
+}
+@-webkit-keyframes shrink {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 50px;
+  }
+}
+
+@keyframes shrink {
+  from {
+    min-width: 350px;
+  }
+  to {
+    min-width: 50px;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 60px;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 60px;
+    opacity: 0;
+  }
+}

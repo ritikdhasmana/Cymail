@@ -1,0 +1,58 @@
+.inbox-container {
+  color: white;
+  margin-top: 5em;
+  width: 80%;
+  height: 100%;
+  margin: auto;
+  margin-top: 5em;
+  /* background-color: white; */
+}
+.mail-container {
+  color: inherit;
+  text-decoration: none;
+  border: none;
+}
+
+.inbox--sent-mail-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.8rem;
+  /* margin-block: 0.7em; */
+  /* background-color: red; */
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid white;
+  width: 100%;
+  height: 10%;
+  border-radius: 1em;
+  margin-bottom: 1em;
+}
+
+.recipient-address,
+.sent-date {
+  margin-inline: 1.5em;
+}
+
+.received-indicator {
+  margin-right: 1em;
+  padding: 0.3em;
+  background-color: red;
+  border-radius: 0.3em;
+}
+
+.sent-indicator {
+  margin-right: 1em;
+  padding: 0.3em;
+  background-color: green;
+  border-radius: 0.3em;
+}
+
+@media (max-width: 600px) {
+  .inbox--sent-mail-container {
+    margin-top: 1em;
+    font-size: 1rem;
+  }
+  .inbox-container {
+    margin-top: 2em;
+  }
+}
