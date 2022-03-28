@@ -17,7 +17,7 @@
 }
 .vm-mail-content-container {
   width: 100%;
-  height: 60%;
+  height: 60vh;
   min-height: 30rem;
   background-color: rgba(256, 256, 256, 0.9);
   /* overflow-wrap: break-word; */
@@ -25,9 +25,18 @@
   color: black;
   margin: auto;
   margin-bottom: 5em;
+  outline: 0.3em solid rgba(240, 209, 108, 0.9);
+  outline-offset: 0.2em;
+  border-radius: 2px;
 }
 @media (max-width: 600px) {
   .view-mail-container {
     font-size: 0.7em;
   }
+}
+.vm-Loading {
+  margin-top: 5em;
+  font-weight: bold;
+  color: white;
+  font-size: 2em;
 }

@@ -3,6 +3,7 @@ import "./styles/ViewMail.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Moralis from "moralis";
+import LoadingIndicator from "../Components/LoadingIndicator";
 const ViewMail = (props) => {
   const params = useParams();
   const [currentMail, setCurrentMail] = useState(false);
@@ -54,7 +55,10 @@ const ViewMail = (props) => {
       ></div>
     </div>
   ) : (
-    <div>No Current Mail !</div>
+    <div className="vm-Loading">
+      <LoadingIndicator />
+      <p>Loading!</p>
+    </div>
   );
 };
 

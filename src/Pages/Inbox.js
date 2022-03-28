@@ -1,8 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles/Inbox.css";
 import Moralis from "moralis";
-
+import { GET_FOLLOWERS } from "../Components/Queries";
+import LoadingIndicator from "../Components/LoadingIndicator";
 const Inbox = (props) => {
   const [allMails, setAllMails] = useState();
   const [updated, setUpdated] = useState();
@@ -86,8 +87,6 @@ const Inbox = (props) => {
     );
   };
   const renderSent = (mail) => {
-    // console.log("to: ", mail.get("to")[0].address);
-    // console.log("id", mail.id);
     return (
       <div className="inbox--sent-mail-container">
         <div className="recipient-address">
@@ -132,7 +131,7 @@ const Inbox = (props) => {
   return (
     <div className="inbox-container">
       <div style={{ marginBottom: "1rem" }}>Click to view details</div>
-      {allMails &&
+      {allMails ? (
         allMails
           .slice(0)
           .reverse()
@@ -146,7 +145,12 @@ const Inbox = (props) => {
                 ? renderSent(mail)
                 : renderReceived(mail, index)}
             </Link>
-          ))}
+          ))
+      ) : (
+        <div className="inbox-Loading">
+          <LoadingIndicator />
+        </div>
+      )}
     </div>
   );
 };

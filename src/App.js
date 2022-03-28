@@ -1,20 +1,39 @@
-// import { useEffect, useState } from "react";
-// import Moralis from "moralis";
-import { memo, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
-import {
-  BrowserRouter as Router,
-  // Routes,
-  // Route,
-  useRoutes,
-} from "react-router-dom";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 import "./app.css";
 import Navbar from "./Components/Navbar";
 import Compose from "./Pages/Compose";
 import Inbox from "./Pages/Inbox";
-import UserInfo from "./Pages/UserInfo";
 import ViewMail from "./Pages/ViewMail";
+
+// import {
+//   ApolloClient,
+//   InMemoryCache,
+//   ApolloProvider,
+//   HttpLink,
+//   from,
+// } from "@apollo/client";
+// import { onError } from "@apollo/client/link/error";
+
+// const errorLink = onError(({ graphqlErrors, networkError }) => {
+//   if (graphqlErrors) {
+//     graphqlErrors.map(({ message, location, path }) => {
+//       alert(`Graphql error $(message)`);
+//       return message;
+//     });
+//   }
+// });
+// const link = from([
+//   errorLink,
+//   new HttpLink({ uri: "https://api.cybertino.io/connect/" }),
+// ]);
+// const client = new ApolloClient({
+//   cache: new InMemoryCache(),
+//   link: link,
+// });
+
 const App = () => {
   const {
     authenticate,
@@ -54,22 +73,6 @@ const App = () => {
     console.log("logged out");
   };
 
-  // const [currentMail, setCurrentMail] = useState(false);
-  // useEffect(() => {
-  //   console.log("here");
-  //   setCurrentMail(() => {
-  //     try {
-  //       return JSON.parse(window.sessionStorage.getItem("currentMail"));
-  //     } catch (e) {
-  //       return window.sessionStorage.getItem("currentMail");
-  //     }
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   window.sessionStorage.setItem("currentMail", currentMail);
-  // }, [currentMail]);
-
   const MyRoutes = () => {
     let routes = useRoutes([
       {
@@ -82,11 +85,12 @@ const App = () => {
       },
       {
         path: "/compose",
-        element: <Compose />,
-      },
-      {
-        path: "/userInfo",
-        element: <UserInfo />,
+        element: (
+          <Compose
+            addr={user.get("ethAddress")}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        ),
       },
       {
         path: "/view-mail:id",
@@ -97,6 +101,7 @@ const App = () => {
   };
   console.log(isLoggedIn);
   return (
+    // <ApolloProvider client={client}>
     <div className="App">
       {isLoggedIn ? (
         <>
@@ -116,6 +121,7 @@ const App = () => {
         </>
       )}
     </div>
+    // </ApolloProvider>
   );
 };
 

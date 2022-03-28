@@ -53,3 +53,11 @@ body {
   margin-top: 3em;
   margin-bottom: 1.5em;
 }
+
+@media (max-width: 600px) {
+  .app--heading {
+    width: 90%;
+    align-items: center;
+    margin-inline: auto;
+  }
+}

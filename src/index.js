@@ -4,15 +4,38 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MoralisProvider } from "react-moralis";
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
 const server_url = process.env.REACT_APP_SERVER_URL;
 const app_id = process.env.REACT_APP_APP_ID;
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        project: {
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+});
+
+const client = new ApolloClient({
+  uri: "https://api.cybertino.io/connect/",
+  cache,
+});
+
 ReactDOM.render(
-  <React.StrictMode>
-    <MoralisProvider serverUrl={server_url} appId={app_id}>
-      <App />
-    </MoralisProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <MoralisProvider serverUrl={server_url} appId={app_id}>
+        <App />
+      </MoralisProvider>
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 

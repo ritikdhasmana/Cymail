@@ -59,11 +59,6 @@ export default function Navbar(props) {
               <span aria-hidden="true">01</span>Compose
             </Link>
           </li>
-          <li onClick={changeLiClass}>
-            <Link className="react-link" to="/userInfo">
-              <span aria-hidden="true">02</span>User Info
-            </Link>
-          </li>
           <li onClick={logout}>
             <Link className="react-link" to="/">
               <span aria-hidden="true">03</span>Log Out

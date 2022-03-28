@@ -9,6 +9,11 @@
   background-color: white;
   margin-bottom: 3em;
   overflow: scroll;
+  /* border: 0.3em solid rgb(240, 209, 108); */
+  /* padding: 0.2em; */
+  outline: 0.3em solid rgba(240, 209, 108, 0.9);
+  outline-offset: 0.2em;
+  border-radius: 2px;
 }
 
 .destination-sendbtn-container {
@@ -22,21 +27,35 @@
 }
 
 .destination-container {
+  display: flex;
+  flex-direction: column;
   padding: 0.5em;
   line-height: 3em;
   align-items: center;
   justify-content: space-between;
 }
 .InputAddressField {
+  position: relative;
   display: flex;
   flex-direction: row;
   margin: 1em;
+  margin-left: 0;
+  margin-right: auto;
   height: 2em;
-  width: 35%;
+  width: 100%;
 }
 .addressfield-label {
+  display: flex;
+  position: relative;
+  /* width: 4em; */
   margin-right: 1em;
+  text-align: center;
+  padding-bottom: 0.5em;
+  overflow-y: hidden;
+  width: 4em;
+  /* overflow: hidden; */
 }
+
 .remove {
   margin-left: 1em;
   font-size: 0.9em;
@@ -44,11 +63,32 @@
   height: inherit;
 }
 
+.AS-container {
+  font-weight: 300;
+  font-size: 0.8rem;
+  position: absolute;
+  /* width: 18em; */
+  height: 20em;
+  z-index: 9;
+  top: 100%;
+  background-color: white;
+  color: black;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 2px;
+  margin-bottom: 5em;
+  padding: 1px;
+  /* border: 1px solid black; */
+}
+.AS-option {
+  cursor: pointer;
+}
 @media (max-width: 600px) {
   .editor-container {
     margin: 0.5em;
     margin-inline: auto;
     height: 75%;
+    width: 85%;
     margin-bottom: 0;
   }
   .destination-sendbtn-container {
@@ -56,12 +96,18 @@
     flex-direction: column;
   }
   .InputAddressField {
-    width: 30%;
+    width: 90%;
     margin: 0.5em;
+  }
+  .destination-container {
+    margin-left: 0;
+  }
+  .AS-container {
+    left: -50%;
   }
 }
 
-/* Toast */
+/* ------------Toast ---------------*/
 #toast {
   visibility: hidden;
   max-width: 500px;
@@ -82,7 +128,7 @@
 
 @media (max-width: 600px) {
   #toast {
-    max-width: 300px;
+    max-width: 350px;
   }
 }
 
