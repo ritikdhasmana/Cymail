@@ -77,4 +77,14 @@ export const GetFollowingQuery = gql`
   }
 `;
 ```
+
+##### Avoid Spamming
+Before sending mail, we check the mails sent by the user in past 30 days and count the number of random address to whom mail was sent by the user.
+
+Here random accounts are accounts which aren't included in user's cyberConnect following, follower, firends list.
+
+And if this count exceeds 30 then the user is flagged as spammer and isn't allowed to send mails anymore till this count resets to a value loewr than 30.
+
+
+
 For now Cymail only supports sending and recieving mails using address and is only avaliable as a web app. 
