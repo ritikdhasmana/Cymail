@@ -11,7 +11,7 @@ import ViewMail from "./Pages/ViewMail";
 const App = () => {
   //Moralis
   const { authenticate, user } = useMoralis();
-
+  const [addr, setAddr] = useState();
   console.log(user);
 
   //user Login Status
@@ -27,6 +27,29 @@ const App = () => {
     window.sessionStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
+  //fetches current ethereum address to check if we are still using the same address or not
+  const getCurrentAccount = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Metamask not found");
+        return;
+      }
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        console.log("Account: ", account);
+        return account;
+      } else {
+        console.log("No account available");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //login using moralis , moralis authenticates using metamask and ethereum address
   const login = async () => {
     await authenticate({ signingMessage: "Log in using Moralis" })
@@ -38,6 +61,8 @@ const App = () => {
         setIsLoggedIn(true);
       })
       .catch(function (error) {
+        //if moralis login fails use standard login
+        getCurrentAccount().then((a) => setAddr(a));
         console.log(error);
       });
   };
@@ -62,7 +87,7 @@ const App = () => {
         path: "/compose",
         element: (
           <Compose
-            addr={user.get("ethAddress")}
+            addr={user ? user.get("ethAddress") : addr}
             setIsLoggedIn={setIsLoggedIn}
           />
         ),
