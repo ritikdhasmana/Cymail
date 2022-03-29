@@ -8,6 +8,7 @@ const Inbox = (props) => {
   const [allMails, setAllMails] = useState();
   const [updated, setUpdated] = useState();
   const [userAddress, setUserAddress] = useState();
+  //subscribes to mails which are being sent to the server
   const subscribeToMails = async () => {
     const Mails = Moralis.Object.extend("Mails");
     let query = new Moralis.Query(Mails);
@@ -39,6 +40,7 @@ const Inbox = (props) => {
     getAllMails();
   }, [updated]);
 
+  //gets current ethereum address
   const getCurrentAccount = async () => {
     try {
       const { ethereum } = window;
@@ -67,6 +69,7 @@ const Inbox = (props) => {
     return date?.toISOString("MM-DD-YYYY").split("T")[0];
   };
 
+  //shortens addresses
   const convertAddressList = (addrList) => {
     const recipientAddr = addrList[0].address;
     const addr =
@@ -86,6 +89,8 @@ const Inbox = (props) => {
       addr.substring(addr.length - 3, addr.length)
     );
   };
+
+  //renders all the mails which were sent by user
   const renderSent = (mail) => {
     return (
       <div className="inbox--sent-mail-container">
@@ -99,6 +104,7 @@ const Inbox = (props) => {
       </div>
     );
   };
+  //renders mail which were recieved by users
   const renderReceived = (mail) => {
     const recieverList = mail.get("to");
     var i;

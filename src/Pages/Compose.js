@@ -14,15 +14,22 @@ import {
 import { useQuery } from "@apollo/client";
 
 const Compose = (props) => {
+  //Rich text editor stattes...using react library wysiwyg
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const onEditorStateChange = (editorState) => {
-    console.log(editorState);
-    setEditorState(editorState);
+    try {
+      console.log(editorState);
+      setEditorState(editorState);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [destinationvalues, setDestinationValues] = useState([{ address: "" }]);
+  //simple toast to notify that mail was sent
   const [showToast, setShowToast] = useState(false);
 
+  //everytime an address is added in the address field , this function is called to set the address in the list of destination addresses
   const handleAddrChange = (i, e) => {
     console.log(destinationvalues[i].address);
     console.log(e);
@@ -30,17 +37,19 @@ const Compose = (props) => {
     newDestinationValues[i]["address"] = e.target.value;
     setDestinationValues(newDestinationValues);
   };
+  //If additional destination address field is needed, this function is called and it pushes new address field to the array
   const addFormFields = () => {
     let newDestinationValues = [...destinationvalues, { address: "" }];
     setDestinationValues(newDestinationValues);
   };
-
+  //it removes destination address fields
   const removeFormFields = (i) => {
     let newDestinationValues = [...destinationvalues];
     newDestinationValues.splice(i, 1);
     setDestinationValues(newDestinationValues);
   };
 
+  //fetches current ethereum address to check if we are still using the same address or not
   const getCurrentAccount = async () => {
     try {
       const { ethereum } = window;
@@ -63,11 +72,13 @@ const Compose = (props) => {
     }
   };
 
+  //creates custom moralis object of type 'mails' to store it in the server
   const Mails = Moralis.Object.extend("Mails");
   let mail = new Mails();
+  //this function sends mail to the server
   const sendNewMail = async () => {
     let curAddress = await getCurrentAccount();
-    console.log("a", curAddress);
+    //prevRandomAddrCount contains count of mails that were sent in last 30 days to random addresses which are not in friends , followings , followers category
     const prevRandomAddrCount = await fetchPrevMails(curAddress);
     if (prevRandomAddrCount > 30) {
       alert("Cannot send mails to more than 30 random Address per month!");
@@ -78,12 +89,16 @@ const Compose = (props) => {
       props.setIsLoggedIn(false);
       return;
     }
+    //sets parameter of mail
     mail.set("from", curAddress);
     mail.set("to", destinationvalues);
+    //editor contains data in draft js format, we conver it to html before sending
+    console.log("mail: ", convertToRaw(editorState.getCurrentContent()));
     const metadata = {
       data: draftToHtml(convertToRaw(editorState.getCurrentContent())),
     };
     mail.set("metadata", metadata);
+    //this sends/saves mail on moralis server
     await mail.save();
     console.log("mail sent from : ", mail);
     setShowToast(true);
@@ -91,8 +106,14 @@ const Compose = (props) => {
       setShowToast(false);
     }, 5000);
   };
+  /////////////// Auto Suggestions(AS) for destinaion based on user's Cyber Connect following/follower/friends ////////////////////////////
+  const [optionsAS, setOptionsAS] = useState([]); ///available options/address
+  const [displayASiD, setDisplayASiD] = useState(-1); //As we have multiple address field, this helps check which address field requires options, (-1==no field selected)
+  const wrapperRef = useRef(null);
 
-  const [optionsAS, setOptionsAS] = useState([]);
+  ///////////////////////////////////Cyber Connect Api integration part starts here ////////////////////////////////////////////////////////////////////
+
+  //To fetch followers details
   const [followersList, setFollowersList] = useState();
   const [followersCursor, setFollowersCursor] = useState(0);
   const [followersData, setFollowersData] = useState();
@@ -130,6 +151,7 @@ const Compose = (props) => {
   console.log("list: ", followersList);
   console.log("cursor: ", followersCursor);
 
+  //To fetch following details
   const [followingsList, setFollowingsList] = useState();
   const [followingsCursor, setFollowingsCursor] = useState(0);
   const [followingsData, setFollowingsData] = useState();
@@ -171,6 +193,7 @@ const Compose = (props) => {
   console.log("list2: ", followingsList);
   console.log("cursor2: ", followingsCursor);
 
+  //To fetch friends details
   const [friendsList, setFriendsList] = useState();
   const [friendsCursor, setFriendsCursor] = useState(0);
   const [friendsData, setFriendsData] = useState();
@@ -206,16 +229,17 @@ const Compose = (props) => {
   console.log("list3: ", friendsList);
   console.log("cursor3: ", friendsCursor);
   console.log(optionsAS);
-  /////////////// Auto Suggestions(AS) for destinaion based on user's Cyber Connect following/follower/friends ////////////////////////////
-  const [displayASiD, setDisplayASiD] = useState(-1);
-  const wrapperRef = useRef(null);
+
+  //on selecting address option
   const handleASOptionCick = (i, newaddr) => {
     let newDestinationValues = [...destinationvalues];
     newDestinationValues[i]["address"] = newaddr;
     setDestinationValues(newDestinationValues);
     console.log(destinationvalues[i].address);
+    //hide options
     setDisplayASiD(-1);
   };
+  //hide option when clicked outside option field
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideAS);
     return () => {
@@ -231,6 +255,7 @@ const Compose = (props) => {
     }
   };
 
+  //helper function to fetch mails sent by user in last 30 days and count number of recipient addresses which weren't in user's cyber connect following, followed or friend list.
   const fetchPrevMails = async (addr) => {
     var today = new Date();
     console.log("arr", addr);
@@ -280,6 +305,7 @@ const Compose = (props) => {
                 value={address.address || ""}
                 onChange={(e) => handleAddrChange(index, e)}
               />
+              {/* display options if this address field is clicked */}
               {displayASiD === index && optionsAS.length > 0 && (
                 <div className="AS-container">
                   {[

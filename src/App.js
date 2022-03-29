@@ -8,43 +8,16 @@ import Compose from "./Pages/Compose";
 import Inbox from "./Pages/Inbox";
 import ViewMail from "./Pages/ViewMail";
 
-// import {
-//   ApolloClient,
-//   InMemoryCache,
-//   ApolloProvider,
-//   HttpLink,
-//   from,
-// } from "@apollo/client";
-// import { onError } from "@apollo/client/link/error";
-
-// const errorLink = onError(({ graphqlErrors, networkError }) => {
-//   if (graphqlErrors) {
-//     graphqlErrors.map(({ message, location, path }) => {
-//       alert(`Graphql error $(message)`);
-//       return message;
-//     });
-//   }
-// });
-// const link = from([
-//   errorLink,
-//   new HttpLink({ uri: "https://api.cybertino.io/connect/" }),
-// ]);
-// const client = new ApolloClient({
-//   cache: new InMemoryCache(),
-//   link: link,
-// });
-
 const App = () => {
-  const {
-    authenticate,
-    // isAuthenticated,
-    user,
-    // account,
-    // logout,
-  } = useMoralis();
+  //Moralis
+  const { authenticate, user } = useMoralis();
 
   console.log(user);
+
+  //user Login Status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //storing user login status to avoid loss on reloads
   useEffect(() => {
     setIsLoggedIn(JSON.parse(window.sessionStorage.getItem("isLoggedIn")));
     console.log("it is called");
@@ -54,6 +27,7 @@ const App = () => {
     window.sessionStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
 
+  //login using moralis , moralis authenticates using metamask and ethereum address
   const login = async () => {
     await authenticate({ signingMessage: "Log in using Moralis" })
       .then(function (user) {
@@ -73,6 +47,7 @@ const App = () => {
     console.log("logged out");
   };
 
+  //setting up routes for the app
   const MyRoutes = () => {
     let routes = useRoutes([
       {
@@ -101,7 +76,6 @@ const App = () => {
   };
   console.log(isLoggedIn);
   return (
-    // <ApolloProvider client={client}>
     <div className="App">
       {isLoggedIn ? (
         <>
@@ -121,7 +95,6 @@ const App = () => {
         </>
       )}
     </div>
-    // </ApolloProvider>
   );
 };
 

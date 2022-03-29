@@ -6,9 +6,11 @@ import { MoralisProvider } from "react-moralis";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
+// Moralis Server
 const server_url = process.env.REACT_APP_SERVER_URL;
 const app_id = process.env.REACT_APP_APP_ID;
 
+//Apollo client
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {

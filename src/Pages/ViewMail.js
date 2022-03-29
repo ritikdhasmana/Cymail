@@ -1,17 +1,22 @@
 import React from "react";
 import "./styles/ViewMail.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Moralis from "moralis";
 import LoadingIndicator from "../Components/LoadingIndicator";
+import DOMPurify from "dompurify";
+
 const ViewMail = (props) => {
   const params = useParams();
   const [currentMail, setCurrentMail] = useState(false);
   const [mailContent, setMailContent] = useState("");
   const mailId = params.id;
+
+  //Generating Moralis Query to fetch data from the database.
   const Mails = Moralis.Object.extend("Mails");
   const query = new Moralis.Query(Mails);
 
+  //fetches mail using mail Id
   const fetchMail = async () => {
     query.equalTo("objectId", mailId);
     const results = await query.find();
@@ -23,9 +28,11 @@ const ViewMail = (props) => {
         setMailContent(results[0].get("metadata").data);
     }
   };
+
   if (currentMail === false) {
     fetchMail();
   }
+
   const dateConverter = (date) => {
     return date?.toISOString("MM-DD-YYYY").split("T")[0];
   };
@@ -50,7 +57,7 @@ const ViewMail = (props) => {
       <div
         className="vm-mail-content-container"
         dangerouslySetInnerHTML={{
-          __html: mailContent,
+          __html: DOMPurify.sanitize(mailContent),
         }}
       ></div>
     </div>
