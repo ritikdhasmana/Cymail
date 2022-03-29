@@ -1,72 +1,66 @@
 # Cymail
 
-This project is my Submission for Gitcoin's 
-Hackathon: Grants Round 13 Hackathon
+This project is my Submission for Gitcoin's Hackathon: Grants Round 13 Hackathon
 [Task 2 - Mails And Credits](https://gitcoin.co/issue/cyberconnecthq/gitcoin-gr13-hackathon/2/100028549).
 
-## Available Scripts
+### About Cymail
 
-In the project directory, you can run:
+Cymail is an online mailing application which uses wallet address to send and fetch mails.
+This app uses React and Moralis and utilizes CyberConnect's GraphQL API to fetch user details such as cyberconnect followers, following and friends and allows you to send mails using their ETH address!
+You can view history of mail sent and recieved in the inbox section or write mails using rich text editor in the compose section!
 
-### `npm start`
+Landing Page Showing highlights - [Landing Page](https://extraordinary-cat-ec8a26.netlify.app/)
+Live Demo - [Cymail](https://earnest-pegasus-59a98f.netlify.app/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Working
+Cymail uses Moralis server to store it's data.
+To run Locally you will be required to create a moralis server is add it's details manually to the project-
+`const server_url = process.env.REACT_APP_SERVER_URL;`
+`const app_id = process.env.REACT_APP_APP_ID;`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Each mail is a custom moralis object stored in the server database
+`const Mails = Moralis.Object.extend("Mails");`
+  `let mail = new Mails();`
 
-### `npm test`
+##### Inbox
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+When user sends a mail it gets stored in the moralis server.
+Then using moralis query we subscribe to changes happening in the database.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ `const subscribeToMails = async () => {`
+    `const Mails = Moralis.Object.extend("Mails");`
+    `let query = new Moralis.Query(Mails);`
+    `let subscription = await query.subscribe();`
+    `subscription.on("create", notifyOnCreate);`
+  `};`
+  It keeps track of changes happening in the server and filters out mails that were sent by user or were intended to be sent to user, after which the selected mails are shown in inbox.
+  
+  ##### Compose
+ Input field to write mail is a rich text editor which uses react package called react-draft-wysiwyg.
+ More details about this can be found [here](https://jpuri.github.io/react-draft-wysiwyg/#/demo)
+ 
+ While selecting the destination addresses to deliver mail Cymail shows a list of addresses from users Cyber Connect following, follower, friends list.
+ This is done using [CyberConnect's Api](https://docs.cyberconnect.me/docs/get_started) which uses GraphQL.
+ Apollo client is used for GraphQL queries.
+```
+export const GetFollowingQuery = gql`
+  query ($Address: String!, $After: String!) {
+    identity(address: $Address) {
+      followings(namespace: "CyberConnect", after: $After) {
+        pageInfo {
+          startCursor
+          endCursor
+          hasPreviousPage
+          hasNextPage
+        }
+        list {
+          address
+          domain
+          avatar
+        }
+      }
+    }
+  }
+`;
+```
+For now Cymail only supports sending and recieving mails using address and is only avaliable as a web app. 
