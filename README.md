@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Cymail
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is my Submission for Gitcoin's 
+Hackathon: Grants Round 13 Hackathon
+[Task 2 - Mails And Credits](https://gitcoin.co/issue/cyberconnecthq/gitcoin-gr13-hackathon/2/100028549).
 
 ## Available Scripts
 
