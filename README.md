@@ -10,16 +10,21 @@ This app uses React and Moralis and utilizes CyberConnect's GraphQL API to fetch
 You can view history of mail sent and recieved in the inbox section or write mails using rich text editor in the compose section!
 
 Landing Page Showing highlights - [Landing Page](https://extraordinary-cat-ec8a26.netlify.app/)
+
 Live Demo - [Cymail](https://earnest-pegasus-59a98f.netlify.app/)
 
 #### Working
 Cymail uses Moralis server to store it's data.
 To run Locally you will be required to create a moralis server is add it's details manually to the project-
+
 `const server_url = process.env.REACT_APP_SERVER_URL;`
+
 `const app_id = process.env.REACT_APP_APP_ID;`
 
 Each mail is a custom moralis object stored in the server database
+
 `const Mails = Moralis.Object.extend("Mails");`
+
   `let mail = new Mails();`
 
 ##### Inbox
@@ -27,20 +32,29 @@ Each mail is a custom moralis object stored in the server database
 When user sends a mail it gets stored in the moralis server.
 Then using moralis query we subscribe to changes happening in the database.
 
- `const subscribeToMails = async () => {`
+    `const subscribeToMails = async () => {`
+ 
     `const Mails = Moralis.Object.extend("Mails");`
+    
     `let query = new Moralis.Query(Mails);`
+    
     `let subscription = await query.subscribe();`
+    
     `subscription.on("create", notifyOnCreate);`
-  `};`
+  
+    `};`
+  
   It keeps track of changes happening in the server and filters out mails that were sent by user or were intended to be sent to user, after which the selected mails are shown in inbox.
   
   ##### Compose
  Input field to write mail is a rich text editor which uses react package called react-draft-wysiwyg.
+ 
  More details about this can be found [here](https://jpuri.github.io/react-draft-wysiwyg/#/demo)
  
  While selecting the destination addresses to deliver mail Cymail shows a list of addresses from users Cyber Connect following, follower, friends list.
+ 
  This is done using [CyberConnect's Api](https://docs.cyberconnect.me/docs/get_started) which uses GraphQL.
+ 
  Apollo client is used for GraphQL queries.
 ```
 export const GetFollowingQuery = gql`
