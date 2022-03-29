@@ -62,7 +62,11 @@ const App = () => {
       })
       .catch(function (error) {
         //if moralis login fails use standard login
-        getCurrentAccount().then((a) => setAddr(a));
+        getCurrentAccount()
+          .then((a) => setAddr(a))
+          .then(() => {
+            setIsLoggedIn(true);
+          });
         console.log(error);
       });
   };
