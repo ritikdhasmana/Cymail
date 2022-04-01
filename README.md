@@ -83,7 +83,7 @@ Before sending mail, we check the mails sent by the user in past 30 days and cou
 
 Here random accounts are accounts which aren't included in user's cyberConnect following, follower, firends list.
 
-And if this count exceeds 30 then the user is flagged as spammer and isn't allowed to send mails anymore till this count resets to a value loewr than 30.
+And a user isn't allowed to send mail to more than 30 random addresses per month.
 
 
 ##### Delete 
