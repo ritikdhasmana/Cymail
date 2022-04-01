@@ -39,14 +39,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (
-      userAddress &&
-      userAddress.length !== 0 &&
-      localStorage.getItem("address") !== userAddress
-    ) {
+    if (userAddress && sessionStorage.getItem("address") !== userAddress) {
       console.log(userAddress);
-      localStorage.setItem("address", userAddress);
-      console.log("local storage ", localStorage.getItem("address"));
+      sessionStorage.setItem("address", userAddress);
+      console.log("local storage ", sessionStorage.getItem("address"));
     }
   }, [userAddress]);
 
@@ -55,10 +51,10 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (!userAddress && localStorage.getItem("address").length === 0) {
+    if (!userAddress && !sessionStorage.getItem("address")) {
       setIsLoggedIn(false);
-    } else if (localStorage.getItem("address")) {
-      setUserAddress(localStorage.getItem("address"));
+    } else if (sessionStorage.getItem("address")) {
+      setUserAddress(sessionStorage.getItem("address"));
       setIsLoggedIn(true);
       console.log("it is called for address", userAddress);
     }
