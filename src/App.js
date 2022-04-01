@@ -40,6 +40,7 @@ const App = () => {
 
   useEffect(() => {
     if (
+      userAddress &&
       userAddress.length !== 0 &&
       localStorage.getItem("address") !== userAddress
     ) {
@@ -54,10 +55,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (
-      userAddress.length === 0 &&
-      localStorage.getItem("address").length === 0
-    ) {
+    if (!userAddress && localStorage.getItem("address").length === 0) {
       setIsLoggedIn(false);
     } else if (localStorage.getItem("address")) {
       setUserAddress(localStorage.getItem("address"));
