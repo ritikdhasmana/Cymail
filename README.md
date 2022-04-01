@@ -13,7 +13,7 @@ Landing Page Showing highlights - [Landing Page](https://extraordinary-cat-ec8a2
 
 Live Demo - [Cymail](https://earnest-pegasus-59a98f.netlify.app/)
 
-#### Working
+#### Working And Features
 Cymail uses Moralis server to store it's data.
 To run Locally you will be required to create a moralis server is add it's details manually to the project-
 
@@ -86,5 +86,11 @@ Here random accounts are accounts which aren't included in user's cyberConnect f
 And if this count exceeds 30 then the user is flagged as spammer and isn't allowed to send mails anymore till this count resets to a value loewr than 30.
 
 
+##### Delete 
+Users can delete their emails. Deleted email won't show up in their inbox.
 
-For now Cymail only supports sending and recieving mails using address and is only avaliable as a web app. 
+
+
+
+
+For now Cymail only supports sending, recieving, and deleting mails using address and is only avaliable as a web app. 
