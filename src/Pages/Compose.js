@@ -49,44 +49,16 @@ const Compose = (props) => {
     setDestinationValues(newDestinationValues);
   };
 
-  //fetches current ethereum address to check if we are still using the same address or not
-  const getCurrentAccount = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        alert("Metamask not found");
-        return;
-      }
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Account: ", account);
-        return account;
-      } else {
-        console.log("No account available");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   //creates custom moralis object of type 'mails' to store it in the server
   const Mails = Moralis.Object.extend("Mails");
   let mail = new Mails();
   //this function sends mail to the server
   const sendNewMail = async () => {
-    let curAddress = await getCurrentAccount();
+    let curAddress = props.addr;
     //prevRandomAddrCount contains count of mails that were sent in last 30 days to random addresses which are not in friends , followings , followers category
     const prevRandomAddrCount = await fetchPrevMails(curAddress);
     if (prevRandomAddrCount > 30) {
       alert("Cannot send mails to more than 30 random Address per month!");
-      return;
-    }
-    if (curAddress !== props.addr) {
-      alert("Address changed. Please log in Again!");
-      props.setIsLoggedIn(false);
       return;
     }
     //sets parameter of mail
@@ -270,10 +242,15 @@ const Compose = (props) => {
     for (let i = 0; i < result.length; i++) {
       var pastRecipients = result[i].get("to");
       for (let j = 0; j < pastRecipients.length; j++) {
-        var recAddr = pastRecipients[j].address;
+        let recAddr = pastRecipients[j].address;
         if (optionsAS.findIndex((x) => x.address === recAddr) === -1)
           randomAddressCount++;
       }
+    }
+    for (let j = 0; j < destinationvalues.length; j++) {
+      let recAddr = destinationvalues[j].address;
+      if (optionsAS.findIndex((x) => x.address === recAddr) === -1)
+        randomAddressCount++;
     }
     console.log(randomAddressCount);
     return randomAddressCount;
