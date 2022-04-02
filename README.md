@@ -9,9 +9,12 @@ Cymail is an online mailing application which uses wallet address to send and fe
 This app uses React and Moralis and utilizes CyberConnect's GraphQL API to fetch user details such as cyberconnect followers, following and friends and allows you to send mails using their ETH address!
 You can view history of mail sent and recieved in the inbox section or write mails using rich text editor in the compose section!
 
-Landing Page Showing highlights - [Landing Page](https://extraordinary-cat-ec8a26.netlify.app/)
+Video demo- [youtube](https://youtu.be/rQwv6IqBB1E)
 
 Live Demo - [Cymail](https://earnest-pegasus-59a98f.netlify.app/)
+
+Landing Page Showing highlights - [Landing Page](https://extraordinary-cat-ec8a26.netlify.app/)
+
 
 #### Working And Features
 Cymail uses Moralis server to store it's data.
